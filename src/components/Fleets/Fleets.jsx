@@ -74,6 +74,14 @@ const Fleets = () => {
     navigate('/booking', { state: { selectedCar: cab } });
   };
 
+  // Scroll to the Cabs grid section
+  const scrollToCabsGrid = () => {
+    const cabsGridSection = document.getElementById('cabs-grid');
+    if (cabsGridSection) {
+      cabsGridSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="bg-white">
       {/* Hero Header Section */}
@@ -96,7 +104,7 @@ const Fleets = () => {
             <div className="flex justify-center">
               <button 
                 className="px-8 py-3 bg-yellow-500 text-blue-950 font-medium rounded hover:bg-yellow-400 transition-all shadow-lg"
-                onClick={() => navigate('/booking')}
+                onClick={scrollToCabsGrid} // Updated to scroll to Cabs grid
               >
                 Book Your Ride Now
               </button>
@@ -193,7 +201,7 @@ const Fleets = () => {
         </div>
         
         {/* Cabs grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div id="cabs-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredCabs.length > 0 ? (
             filteredCabs.map(cab => (
               <div key={cab.id} className="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 border border-gray-100">
@@ -255,7 +263,7 @@ const Fleets = () => {
           </p>
           <button 
             className="px-8 py-3 bg-yellow-500 text-blue-950 font-bold rounded-lg hover:bg-yellow-400 transition-all shadow-lg"
-            onClick={() => navigate('/booking')}
+            onClick={scrollToCabsGrid} // Updated to scroll to Cabs grid
           >
             Reserve Your Vehicle
           </button>

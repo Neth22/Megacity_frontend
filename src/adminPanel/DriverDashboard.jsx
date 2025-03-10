@@ -3,6 +3,8 @@ import axios from "axios";
 
 const DriverDashboard = () => {
   const [drivers, setDrivers] = useState([]);
+  const [selectedDriver, setSelectedDriver] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     // Fetch drivers from the backend
@@ -18,6 +20,13 @@ const DriverDashboard = () => {
     fetchDrivers();
   }, []);
 
+  const handleViewDriver = (driver) => {
+    setSelectedDriver(driver);
+    setIsModalOpen(true);
+  };
+
+  
+
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <h1 className="text-2xl font-bold mb-6">Pending Drivers</h1>
@@ -29,9 +38,6 @@ const DriverDashboard = () => {
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Name
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                License Number
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Phone Number
@@ -51,9 +57,6 @@ const DriverDashboard = () => {
                   {driver.driverName}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {driver.driverLicenseNo}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {driver.driverPhoneNum}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
@@ -66,7 +69,10 @@ const DriverDashboard = () => {
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button className="text-indigo-600 hover:text-indigo-900 mr-4">
+                  <button 
+                    className="text-indigo-600 hover:text-indigo-900 mr-4"
+                    onClick={() => handleViewDriver(driver)}
+                  >
                     View
                   </button>
                 </td>
@@ -75,6 +81,29 @@ const DriverDashboard = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Modal for viewing driver details */}
+      {isModalOpen && selectedDriver && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
+            <h2 className="text-xl font-bold mb-4">Driver Details</h2>
+            <p><strong>Name:</strong> {selectedDriver.driverName}</p>
+            <p><strong>License Number:</strong> {selectedDriver.driverLicenseNo}</p>
+            <p><strong>Phone Number:</strong> {selectedDriver.driverPhoneNum}</p>
+            <p><strong>Email:</strong> {selectedDriver.email}</p>
+            
+            <div className="mt-4 flex justify-end">
+              
+              <button
+                className="bg-gray-500 text-white px-4 py-2 rounded ml-2"
+                onClick={() => setIsModalOpen(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,125 +1,121 @@
-import React from "react";
-import {
-  Users,
-  ShoppingCart,
-  Truck,
-  BarChart2,
-  Clock,
-  Bell,
-} from "lucide-react";
+import React from 'react';
+import { 
+  LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, 
+  Tooltip, Legend, ResponsiveContainer 
+} from 'recharts';
 
 const AdminDashboard = () => {
-  // Mock data for metrics
-  const metrics = [
-    {
-      id: 1,
-      title: "Total Users",
-      value: "1,234",
-      icon: <Users size={24} className="text-blue-500" />,
-      change: "+12%",
-    },
-    {
-      id: 2,
-      title: "Total Drivers",
-      value: "456",
-      icon: <Truck size={24} className="text-green-500" />,
-      change: "+8%",
-    },
-    {
-      id: 3,
-      title: "Total Orders",
-      value: "789",
-      icon: <ShoppingCart size={24} className="text-yellow-500" />,
-      change: "+5%",
-    },
-    {
-      id: 4,
-      title: "Revenue",
-      value: "$12,345",
-      icon: <BarChart2 size={24} className="text-purple-500" />,
-      change: "+15%",
-    },
+  // Sample data
+  const metrics = {
+    totalCustomers: 4823,
+    totalDrivers: 267,
+    totalBookings: 18945
+  };
+  
+  // Line chart data - daily trend
+  const lineData = [
+    { day: 'Mar 1', value: 10000 },
+    { day: 'Mar 3', value: 30000 },
+    { day: 'Mar 5', value: 20000 },
+    { day: 'Mar 7', value: 29000 },
+    { day: 'Mar 9', value: 33000 },
+    { day: 'Mar 11', value: 25000 },
+    { day: 'Mar 13', value: 39000 }
   ];
 
-  // Mock data for recent activities
-  const recentActivities = [
-    {
-      id: 1,
-      description: "New order placed by John Doe",
-      time: "2 mins ago",
-    },
-    {
-      id: 2,
-      description: "Driver Jane Smith updated her profile",
-      time: "10 mins ago",
-    },
-    {
-      id: 3,
-      description: "New user registered: Alice Johnson",
-      time: "15 mins ago",
-    },
-    {
-      id: 4,
-      description: "Order #1234 delivered successfully",
-      time: "30 mins ago",
-    },
+  // Bar chart data - monthly data
+  const barData = [
+    { month: 'January', value: 4200 },
+    { month: 'February', value: 5300 },
+    { month: 'March', value: 6100 },
+    { month: 'April', value: 7500 },
+    { month: 'May', value: 9800 },
+    { month: 'June', value: 14800 }
   ];
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="bg-gray-100 min-h-screen p-4">
       <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
-
-      {/* Key Metrics Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {metrics.map((metric) => (
-          <div
-            key={metric.id}
-            className="bg-white rounded-lg shadow p-6 flex items-center justify-between"
-          >
+      
+      {/* Metric Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="bg-blue-500 text-white rounded-lg shadow p-4">
+          <div className="flex justify-between">
             <div>
-              <p className="text-sm text-gray-500">{metric.title}</p>
-              <p className="text-2xl font-bold">{metric.value}</p>
-              <p className="text-sm text-green-500">{metric.change}</p>
+              <p className="text-sm">Total Customers</p>
+              <h3 className="text-2xl font-bold">{metrics.totalCustomers}</h3>
             </div>
-            <div className="p-3 bg-gray-100 rounded-full">{metric.icon}</div>
+            <div className="p-2 bg-blue-400 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            </div>
           </div>
-        ))}
+        </div>
+
+        <div className="bg-yellow-500 text-white rounded-lg shadow p-4">
+          <div className="flex justify-between">
+            <div>
+              <p className="text-sm">Total Drivers</p>
+              <h3 className="text-2xl font-bold">{metrics.totalDrivers}</h3>
+            </div>
+            <div className="p-2 bg-yellow-400 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-green-500 text-white rounded-lg shadow p-4">
+          <div className="flex justify-between">
+            <div>
+              <p className="text-sm">Total Bookings</p>
+              <h3 className="text-2xl font-bold">{metrics.totalBookings}</h3>
+            </div>
+            <div className="p-2 bg-green-400 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Recent Activities Section */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-bold mb-4">Recent Activities</h2>
-        <ul className="space-y-4">
-          {recentActivities.map((activity) => (
-            <li key={activity.id} className="flex items-center">
-              <div className="p-2 bg-gray-100 rounded-full">
-                <Bell size={18} className="text-gray-500" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium">{activity.description}</p>
-                <p className="text-xs text-gray-500">{activity.time}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {/* Charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="bg-white rounded-lg shadow p-4">
+          <h2 className="text-lg font-semibold mb-4">Daily Booking Trend</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={lineData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="day" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line 
+                type="monotone" 
+                dataKey="value" 
+                stroke="#3B82F6" 
+                activeDot={{ r: 8 }} 
+                strokeWidth={2}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
 
-      {/* Quick Links Section */}
-      <div className="mt-8">
-        <h2 className="text-xl font-bold mb-4">Quick Links</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-white rounded-lg shadow p-6 flex items-center space-x-4 hover:shadow-md transition-shadow">
-            <Users size={24} className="text-blue-500" />
-            <p className="text-lg font-medium">Manage Users</p>
-          </div>
-          <div className="bg-white rounded-lg shadow p-6 flex items-center space-x-4 hover:shadow-md transition-shadow">
-            <Truck size={24} className="text-green-500" />
-            <p className="text-lg font-medium">Manage Drivers</p>
-          </div>
-          <div className="bg-white rounded-lg shadow p-6 flex items-center space-x-4 hover:shadow-md transition-shadow">
-            <ShoppingCart size={24} className="text-yellow-500" />
-            <p className="text-lg font-medium">Manage Orders</p>
-          </div>
+        <div className="bg-white rounded-lg shadow p-4">
+          <h2 className="text-lg font-semibold mb-4">Monthly Bookings</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={barData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="value" fill="#3B82F6" />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
     </div>

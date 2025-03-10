@@ -9,46 +9,48 @@ import {
   LogOut,
   Bell,
 } from "lucide-react";
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../util/AuthContext"; // Import the useAuth hook
 
 const Sidebar = () => {
   const [activeItem, setActiveItem] = useState("dashboard");
+  const navigate = useNavigate();
+  const { user, logout } = useAuth(); // Access the user and logout function from AuthContext
 
   const menuItems = [
     {
       id: "dashboard",
       icon: <LayoutDashboard size={20} />,
       label: "Dashboard",
-      path: "/admin/dashboard", // Add path for each menu item
+      path: "/admin/dashboard",
     },
     {
-      id: "driverDashboard",
+      id: "drivers",
       icon: <Users size={20} />,
       label: "Drivers",
-      path: "/admin/driverDashboard", // Add path for each menu item
+      path: "/admin/driverDashboard",
     },
     {
-      id: "products",
+      id: "cabs",
       icon: <ShoppingCart size={20} />,
-      label: "Products",
-      path: "/products", // Add path for each menu item
+      label: "Cabs",
+      path: "/admin/cabs",
     },
     {
-      id: "analytics",
+      id: "bookings",
       icon: <BarChart3 size={20} />,
-      label: "Analytics",
-      path: "/analytics", // Add path for each menu item
-    },
-    {
-      id: "settings",
-      icon: <Settings size={20} />,
-      label: "Settings",
-      path: "/settings", // Add path for each menu item
+      label: "Bookings",
+      path: "/admin/bookingDashboard",
     },
   ];
 
   const handleItemClick = (id) => {
     setActiveItem(id);
+  };
+
+  const handleLogout = () => {
+    logout(); // Call the logout function from AuthContext
+    navigate("/login"); // Navigate to the login page
   };
 
   return (
@@ -67,7 +69,7 @@ const Sidebar = () => {
           {menuItems.map((item) => (
             <li key={item.id}>
               <Link
-                to={item.path} // Use the path for navigation
+                to={item.path}
                 className={`w-full flex items-center px-4 py-3 rounded-md transition-colors ${
                   activeItem === item.id
                     ? "bg-[#1a3663] text-yellow-400"
@@ -89,16 +91,11 @@ const Sidebar = () => {
       {/* User Profile Section */}
       <div className="p-4 border-t border-[#1a3663]">
         <div className="flex items-center justify-between mb-3">
-          <div className="relative">
-            <Bell
-              size={20}
-              className="text-gray-300 hover:text-yellow-400 cursor-pointer"
-            />
-            <span className="absolute -top-1 -right-1 h-4 w-4 bg-yellow-500 rounded-full flex items-center justify-center text-[10px] font-medium text-[#0a2351]">
-              3
-            </span>
-          </div>
-          <button className="text-gray-300 hover:text-yellow-400">
+          <div className="relative"></div>
+          <button
+            className="text-gray-300 hover:text-yellow-400"
+            onClick={handleLogout} // Attach handleLogout to the onClick event
+          >
             <LogOut size={20} />
           </button>
         </div>
@@ -109,7 +106,8 @@ const Sidebar = () => {
             className="h-10 w-10 rounded-full border-2 border-yellow-500"
           />
           <div className="ml-3">
-            <p className="text-sm font-medium">John Doe</p>
+            {/* Display the admin's name dynamically */}
+            <p className="text-sm font-medium">{user?.username.charAt(0).toUpperCase()}</p>
             <p className="text-xs text-gray-400">Administrator</p>
           </div>
         </div>

@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+// Component removed: MapUpdater
+// Leaflet imports removed
 
 const Booking = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // Get selected car and preserved booking data from location state
   const preselectedCar = location.state?.selectedCar || null;
   const preservedBookingData = location.state?.bookingData || null;
   
-  // State for booking form with preserved data if available
   const [bookingData, setBookingData] = useState({
     customerId: localStorage.getItem('userId') || '',
     carId: preselectedCar?.id || '',
@@ -21,11 +21,8 @@ const Booking = () => {
     driverRequired: preservedBookingData?.driverRequired || false
   });
   
-  // State for available cars
   const [availableCars, setAvailableCars] = useState([]);
   const [selectedCar, setSelectedCar] = useState(preselectedCar);
-  
-  // State for booking process
   const [step, setStep] = useState(preselectedCar ? 2 : 1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -34,15 +31,13 @@ const Booking = () => {
     tax: 0,
     totalAmount: 0
   });
-  
-  // Calculate initial fare if car is preselected
+
   useEffect(() => {
     if (preselectedCar) {
       calculateFare(preselectedCar);
     }
   }, [preselectedCar]);
   
-  // Fetch available cars
   useEffect(() => {
     const fetchAvailableCars = async () => {
       try {
@@ -70,8 +65,9 @@ const Booking = () => {
       fetchAvailableCars();
     }
   }, [preselectedCar]);
-  
-  // Handle input changes
+
+  // Removed geocodeAddress function and related useEffect
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setBookingData({
@@ -80,7 +76,6 @@ const Booking = () => {
     });
   };
   
-  // Handle car selection
   const handleCarSelect = (car) => {
     setSelectedCar(car);
     setBookingData({
@@ -90,7 +85,6 @@ const Booking = () => {
     calculateFare(car);
   };
   
-  // Calculate fare
   const calculateFare = (car) => {
     const baseFare = car.hourlyRate * 3;
     const tax = baseFare * 0.12;
@@ -103,7 +97,6 @@ const Booking = () => {
     });
   };
   
-  // Handle form submission
   const handleSubmit = async () => {
     setLoading(true);
     setError('');
@@ -144,7 +137,6 @@ const Booking = () => {
     }
   };
 
-  // Handle changing vehicle
   const handleChangeVehicle = () => {
     navigate('/ourfleet', { 
       state: { 
@@ -153,24 +145,9 @@ const Booking = () => {
       }
     });
   };
-  
-  // Render steps
-  const renderStep = () => {
-    switch(step) {
-      case 1:
-        return renderVehicleSelection();
-      case 2:
-        return renderBookingDetails();
-      case 3:
-        return renderConfirmation();
-      default:
-        return renderVehicleSelection();
-    }
-  };
-  
+
   const renderVehicleSelection = () => (
     <div className="mb-12">
-      
       <h3 className="text-2xl font-bold text-blue-950 mb-6">Select Your Vehicle</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {availableCars.map(car => (
@@ -212,23 +189,13 @@ const Booking = () => {
       </div>
     </div>
   );
-  
+
   const renderBookingDetails = () => (
     <div className="mb-12">
-      <div className="flex items-center mb-6">
-        <button 
-          className="mr-4 p-2 rounded-full bg-blue-100 text-blue-950 hover:bg-blue-200 transition"
-          onClick={() => setStep(1)}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
-          </svg>
-        </button>
-        <h3 className="text-2xl font-bold text-blue-950">Complete Your Booking</h3>
-      </div>
+      <h3 className="text-2xl font-bold text-blue-950 mb-6">Complete Your Booking</h3>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
-          <div className="bg-white p-6 rounded-xl shadow-lg">
+          <div className="bg-white p-6 rounded-xl shadow-lg mb-6">
             <h4 className="font-bold text-lg mb-4 text-blue-950">Trip Details</h4>
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -295,6 +262,7 @@ const Booking = () => {
               </div>
             </div>
           </div>
+          {/* Map section removed */}
         </div>
         <div>
           <div className="bg-white p-6 rounded-xl shadow-lg">
@@ -360,7 +328,7 @@ const Booking = () => {
       {error && <div className="mt-6 p-4 bg-red-100 text-red-700 rounded-lg">{error}</div>}
     </div>
   );
-  
+
   const renderConfirmation = () => (
     <div className="text-center py-12">
       <div className="inline-flex items-center justify-center w-24 h-24 bg-green-100 rounded-full mb-6">
@@ -399,7 +367,20 @@ const Booking = () => {
       </div>
     </div>
   );
-  
+
+  const renderStep = () => {
+    switch(step) {
+      case 1:
+        return renderVehicleSelection();
+      case 2:
+        return renderBookingDetails();
+      case 3:
+        return renderConfirmation();
+      default:
+        return renderVehicleSelection();
+    }
+  };
+
   return (
     <div className="bg-gray-50 min-h-screen">
       <div className="bg-blue-950 relative overflow-hidden">
@@ -448,45 +429,6 @@ const Booking = () => {
           {renderStep()}
         </div>
       </div>
-      {step < 3 && (
-        <div className="bg-white py-16">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-blue-950 mb-4">Why Book With Us?</h2>
-              <div className="h-1 w-16 bg-yellow-500 mx-auto mb-6"></div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              <div className="text-center p-6">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-blue-950" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-blue-950 mb-2">Fast & Reliable</h3>
-                <p className="text-gray-600">Quick bookings with on-time pickups guaranteed for all your transportation needs.</p>
-              </div>
-              <div className="text-center p-6">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-100 rounded-full mb-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-blue-950 mb-2">Transparent Pricing</h3>
-                <p className="text-gray-600">No hidden fees or surprise charges. Know exactly what you're paying for.</p>
-              </div>
-              <div className="text-center p-6">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-blue-950 mb-2">Safe & Secure</h3>
-                <p className="text-gray-600">Professional drivers and well-maintained vehicles for your safety and comfort.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

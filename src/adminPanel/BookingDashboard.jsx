@@ -3,7 +3,7 @@ import React from 'react';
 const BookingDashboard = () => {
   return (
     <div>
-      This is my booking dashboard
+       uiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiThis is my booking dashboard
     </div>
   );
 }
