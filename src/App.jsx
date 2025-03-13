@@ -15,6 +15,7 @@ import Login from "./pages/AuthPage/Login.jsx";
 import Signup from "./pages/AuthPage/Signup.jsx";
 import FleetPage from "./pages/Fleets/FleetPage.jsx";
 import BookingPage from "./pages/Booking/BookingPage.jsx";
+import DriverProfile from "./pages/Drivers/DriverProfile.jsx";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -41,6 +42,7 @@ function App() {
         <Route path="/signup" element={<Signup/>} />
         <Route path="/ourfleet" element={<FleetPage/>} />
         <Route path="/booking" element={<BookingPage/>} />
+        <Route path="/driverProfile" element={<DriverProfile/>}/>
       </Routes>
     </>
   );
