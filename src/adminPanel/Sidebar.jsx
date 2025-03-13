@@ -34,13 +34,20 @@ const Sidebar = () => {
       id: "cabs",
       icon: <ShoppingCart size={20} />,
       label: "Cabs",
-      path: "/admin/cabs",
+      path: "/admin/carDashboard",
     },
     {
       id: "bookings",
       icon: <BarChart3 size={20} />,
       label: "Bookings",
       path: "/admin/bookingDashboard",
+    },
+
+    {
+      id: "customer",
+      icon: <Users size={20} />,
+      label: "Customer Details",
+      path: "/admin/customerDashboard",
     },
   ];
 
@@ -54,7 +61,7 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="w-64 min-h-screen bg-[#0a2351] text-white flex flex-col">
+    <aside className="w-64 min-h-screen bg-[#0a2351] text-white flex flex-col ">
       {/* Brand/Logo Section */}
       <div className="p-5 border-b border-[#1a3663] flex items-center">
         <div className="h-8 w-8 rounded-md bg-yellow-500 flex items-center justify-center font-bold text-[#0a2351]">

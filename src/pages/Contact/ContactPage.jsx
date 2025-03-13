@@ -366,13 +366,13 @@ export default function ContactPage() {
                         id="name"
                         value={form.name} 
                         onChange={handleChange} 
-                        className="peer w-full bg-gray-100 outline-none rounded-lg px-4 pt-8 pb-2 border-2 border-transparent focus:border-yellow-500 transition-all" 
+                        className="peer w-full bg-gray-100 outline-none rounded-lg px-4 pt-8 pb-2 border-2 border-transparent focus:border-yellow-500 transition-all text-black" 
                         placeholder=" " 
                         required 
                       />
                       <label 
                         htmlFor="name" 
-                        className="absolute text-blue-950/60 left-4 top-5 peer-focus:text-xs peer-focus:top-2 peer-focus:text-yellow-500 peer-placeholder-shown:top-5 peer-placeholder-shown:text-base transition-all"
+                        className="absolute text-blue-950/60 left-4 top-5 peer-focus:text-xs peer-focus:top-2 peer-focus:text-yellow-500 peer-placeholder-shown:top-5 peer-placeholder-shown:text-base transition-all "
                       >
                         Your Name
                       </label>
@@ -385,7 +385,7 @@ export default function ContactPage() {
                         id="email"
                         value={form.email} 
                         onChange={handleChange} 
-                        className="peer w-full bg-gray-100 outline-none rounded-lg px-4 pt-8 pb-2 border-2 border-transparent focus:border-yellow-500 transition-all" 
+                        className="peer w-full bg-gray-100 outline-none rounded-lg px-4 pt-8 pb-2 border-2 border-transparent focus:border-yellow-500 transition-all text-black" 
                         placeholder=" " 
                         required 
                       />
@@ -406,7 +406,7 @@ export default function ContactPage() {
                         id="phone"
                         value={form.phone} 
                         onChange={handleChange} 
-                        className="peer w-full bg-gray-100 outline-none rounded-lg px-4 pt-8 pb-2 border-2 border-transparent focus:border-yellow-500 transition-all" 
+                        className="peer w-full bg-gray-100 outline-none rounded-lg px-4 pt-8 pb-2 border-2 border-transparent focus:border-yellow-500 transition-all text-black" 
                         placeholder=" " 
                         required 
                       />
@@ -451,7 +451,7 @@ export default function ContactPage() {
                       id="message"
                       value={form.message} 
                       onChange={handleChange} 
-                      className="peer w-full bg-gray-100 outline-none rounded-lg px-4 pt-8 pb-2 border-2 border-transparent focus:border-yellow-500 transition-all min-h-32" 
+                      className="peer w-full bg-gray-100 outline-none rounded-lg px-4 pt-8 pb-2 border-2 border-transparent focus:border-yellow-500 transition-all min-h-32 text-black" 
                       placeholder=" " 
                       rows="4" 
                       required 

@@ -29,16 +29,23 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Newsletter Section */}
           <div>
-            <h4 className="text-lg font-semibold text-white mb-4">Our Services</h4>
-            <ul className="space-y-2">
-              <li><a href="#" className="hover:text-white">City Rides</a></li>
-              <li><a href="#" className="hover:text-white">Airport Transfer</a></li>
-              <li><a href="#" className="hover:text-white">Corporate Services</a></li>
-              <li><a href="#" className="hover:text-white">Tour Packages</a></li>
-              <li><a href="#" className="hover:text-white">Luxury Fleet</a></li>
-            </ul>
+            <h4 className="text-lg font-semibold text-white mb-4">Join Our Newsletter</h4>
+            <p className="mb-4">Subscribe to get the latest updates, exclusive offers, and travel tips directly in your inbox.</p>
+            <form className="flex flex-col space-y-3">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="p-2 rounded bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                type="submit"
+                className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-300"
+              >
+                Subscribe
+              </button>
+            </form>
           </div>
 
           {/* Contact Info */}

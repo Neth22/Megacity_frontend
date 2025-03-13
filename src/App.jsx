@@ -41,8 +41,6 @@ function App() {
         <Route path="/signup" element={<Signup/>} />
         <Route path="/ourfleet" element={<FleetPage/>} />
         <Route path="/booking" element={<BookingPage/>} />
-
-        <Route path="/sidebar" element={<Sidebar />} />
       </Routes>
     </>
   );

@@ -74,7 +74,7 @@ const Login = () => {
           navigate("/admin/dashboard");
           break;
         case "ROLE_CUSTOMER":
-          navigate("/cusDashboard");
+          navigate("/home");
           break;
         case "ROLE_DRIVER":
           navigate("/driver-dashboard");
