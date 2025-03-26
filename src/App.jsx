@@ -16,6 +16,7 @@ import Signup from "./pages/AuthPage/Signup.jsx";
 import FleetPage from "./pages/Fleets/FleetPage.jsx";
 import BookingPage from "./pages/Booking/BookingPage.jsx";
 import DriverProfile from "./pages/Drivers/DriverProfile.jsx";
+import CustomerProfile from "./pages/Customer/CustomerProfile.jsx";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -43,6 +44,7 @@ function App() {
         <Route path="/ourfleet" element={<FleetPage/>} />
         <Route path="/booking" element={<BookingPage/>} />
         <Route path="/driverProfile" element={<DriverProfile/>}/>
+        <Route path="/customerProfile" element={<CustomerProfile/>}/>
       </Routes>
     </>
   );

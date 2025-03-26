@@ -25,10 +25,8 @@ const DriverDashboard = () => {
     setIsModalOpen(true);
   };
 
-  
-
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="ml-64 p-6 bg-gray-100 min-h-screen"> {/* Added ml-64 to offset the fixed sidebar */}
       <h1 className="text-2xl font-bold mb-6">Pending Drivers</h1>
 
       {/* Table to display drivers */}
@@ -69,7 +67,7 @@ const DriverDashboard = () => {
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button 
+                  <button
                     className="text-indigo-600 hover:text-indigo-900 mr-4"
                     onClick={() => handleViewDriver(driver)}
                   >
@@ -91,9 +89,8 @@ const DriverDashboard = () => {
             <p><strong>License Number:</strong> {selectedDriver.driverLicenseNo}</p>
             <p><strong>Phone Number:</strong> {selectedDriver.driverPhoneNum}</p>
             <p><strong>Email:</strong> {selectedDriver.email}</p>
-            
+
             <div className="mt-4 flex justify-end">
-              
               <button
                 className="bg-gray-500 text-white px-4 py-2 rounded ml-2"
                 onClick={() => setIsModalOpen(false)}

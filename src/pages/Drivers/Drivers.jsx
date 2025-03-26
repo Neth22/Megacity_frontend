@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
-import { User, Mail, Phone, Car, ArrowRight, CheckCircle, Lock } from 'lucide-react';
+import { User, Mail, Phone, Car, ArrowRight, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import driver_img from "/src/assets/driver_img.webp";
-import Navbar from '../../components/Navbar/Navbar';
-import Footer from '../../components/Footer/Footer';
 import axios from 'axios';
 
 const Drivers = () => {
   const [step, setStep] = useState(1);
-  const [hasCar, setHasCar] = useState(false); // State to track if the driver has a car
+  const [hasCar, setHasCar] = useState(false);
 
-  // Form state
   const [formData, setFormData] = useState({
     driverName: '',
     email: '',
@@ -24,10 +21,9 @@ const Drivers = () => {
     capacity: 4,
     baseRate: 0,
     driverRate: 0,
-    carImage: null,
+    carImg: null,
   });
 
-  // Error state
   const [errors, setErrors] = useState({});
 
   const fadeIn = {
@@ -36,22 +32,18 @@ const Drivers = () => {
     exit: { opacity: 0, y: -20 },
   };
 
-  // Handle input change
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === 'carImage') {
+    if (name === 'carImg') {
       setFormData({ ...formData, [name]: files[0] });
     } else {
       setFormData({ ...formData, [name]: value });
     }
-    // Clear error for the field being updated
     setErrors({ ...errors, [name]: '' });
   };
 
-  // Validate form fields
   const validateForm = () => {
     const newErrors = {};
-
     if (step === 1) {
       if (!formData.driverName) newErrors.driverName = 'Full Name is required';
       if (!formData.email) newErrors.email = 'Email is required';
@@ -65,16 +57,14 @@ const Drivers = () => {
       if (!formData.capacity) newErrors.capacity = 'Number of Seats is required';
       if (!formData.baseRate) newErrors.baseRate = 'Base Rate is required';
       if (!formData.driverRate) newErrors.driverRate = 'Driver Rate is required';
-      if (!formData.carImage) newErrors.carImage = 'Car Image is required';
+      if (!formData.carImg) newErrors.carImg = 'Car Image is required';
     }
-
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Return true if no errors
+    return Object.keys(newErrors).length === 0;
   };
 
-  // Handle form submission
   const handleSubmit = async () => {
-    if (!validateForm()) return; // Stop if validation fails
+    if (!validateForm()) return;
 
     try {
       const formDataToSend = new FormData();
@@ -92,13 +82,14 @@ const Drivers = () => {
         formDataToSend.append('capacity', formData.capacity);
         formDataToSend.append('baseRate', formData.baseRate);
         formDataToSend.append('driverRate', formData.driverRate);
-        if (formData.carImage) {
-          formDataToSend.append('carImage', formData.carImage);
+        if (formData.carImg) {
+          formDataToSend.append('carImg', formData.carImg);
         }
       }
 
+      // Connect to the backend endpoint
       const response = await axios.post(
-        'http://localhost:8080/auth/driver/createdriver',
+        'http://localhost:8080/auth/driver/createdriver', // Backend URL
         formDataToSend,
         {
           headers: {
@@ -110,7 +101,7 @@ const Drivers = () => {
       console.log('Driver created successfully:', response.data);
       alert('Driver registration successful!');
 
-      // Clear form fields after successful submission
+      // Reset form
       setFormData({
         driverName: '',
         email: '',
@@ -124,41 +115,30 @@ const Drivers = () => {
         capacity: 4,
         baseRate: 0,
         driverRate: 0,
-        carImage: null,
+        carImg: null,
       });
-      setStep(1); // Reset to the first step
-      setHasCar(false); // Reset car ownership toggle
+      setStep(1);
+      setHasCar(false);
     } catch (error) {
-      console.error('Error creating driver:', error);
-      alert('Error creating driver. Please try again.');
+      console.error('Error creating driver:', error.response?.data || error.message);
+      alert('Error creating driver: ' + (error.response?.data || 'Please try again.'));
     }
   };
 
-  // Handle next step
   const handleNextStep = () => {
-    if (!validateForm()) return; // Stop if validation fails
+    if (!validateForm()) return;
     setStep(step + 1);
   };
 
   return (
     <div className="flex min-h-screen flex-col">
-      
-      {/* Main Content */}
       <div className="flex flex-1">
-        {/* Left side - Form */}
         <div className="w-full lg:w-1/2 bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-8 overflow-y-auto pt-20">
-          {/* Header */}
-          <motion.div
-            className="mb-8"
-            initial={fadeIn.initial}
-            animate={fadeIn.animate}
-            transition={{ duration: 0.5 }}
-          >
+          <motion.div className="mb-8" initial={fadeIn.initial} animate={fadeIn.animate} transition={{ duration: 0.5 }}>
             <h1 className="text-4xl font-bold text-blue-950 mb-4 mt-8">Become a Driver</h1>
             <p className="text-lg text-gray-600">Start earning with Sri Lanka's leading ride-hailing platform</p>
           </motion.div>
 
-          {/* Main Form Container */}
           <motion.div
             className="bg-white rounded-xl shadow-lg p-6 md:p-8"
             initial={fadeIn.initial}
@@ -166,16 +146,10 @@ const Drivers = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <form onSubmit={(e) => e.preventDefault()}>
-              {/* Step 1: Personal Information */}
               {step === 1 && (
-                <motion.div
-                  className="space-y-6"
-                  {...fadeIn}
-                  transition={{ duration: 0.5 }}
-                >
+                <motion.div className="space-y-6" {...fadeIn} transition={{ duration: 0.5 }}>
                   <h2 className="text-2xl font-semibold text-gray-800 mb-6">Personal Information</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Full Name */}
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700">Full Name</label>
                       <div className="relative">
@@ -192,7 +166,6 @@ const Drivers = () => {
                       {errors.driverName && <p className="text-red-500 text-sm">{errors.driverName}</p>}
                     </div>
 
-                    {/* Email Address */}
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700">Email Address</label>
                       <div className="relative">
@@ -209,7 +182,6 @@ const Drivers = () => {
                       {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                     </div>
 
-                    {/* Phone Number */}
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700">Phone Number</label>
                       <div className="relative">
@@ -226,7 +198,6 @@ const Drivers = () => {
                       {errors.driverPhoneNum && <p className="text-red-500 text-sm">{errors.driverPhoneNum}</p>}
                     </div>
 
-                    {/* License No */}
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700">License No</label>
                       <div className="relative">
@@ -243,7 +214,6 @@ const Drivers = () => {
                       {errors.driverLicenseNo && <p className="text-red-500 text-sm">{errors.driverLicenseNo}</p>}
                     </div>
 
-                    {/* Password Field */}
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700">Password</label>
                       <div className="relative">
@@ -260,7 +230,6 @@ const Drivers = () => {
                       {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
                     </div>
 
-                    {/* Car Ownership Toggle */}
                     <div className="col-span-full space-y-2">
                       <label className="text-sm font-medium text-gray-700">Do you have your own car?</label>
                       <div className="flex items-center space-x-4">
@@ -270,9 +239,7 @@ const Drivers = () => {
                             setHasCar(true);
                             setFormData({ ...formData, hasOwnCar: true });
                           }}
-                          className={`px-4 py-2 rounded-lg ${
-                            hasCar ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
-                          }`}
+                          className={`px-4 py-2 rounded-lg ${hasCar ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
                         >
                           Yes
                         </button>
@@ -282,9 +249,7 @@ const Drivers = () => {
                             setHasCar(false);
                             setFormData({ ...formData, hasOwnCar: false });
                           }}
-                          className={`px-4 py-2 rounded-lg ${
-                            !hasCar ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
-                          }`}
+                          className={`px-4 py-2 rounded-lg ${!hasCar ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'}`}
                         >
                           No
                         </button>
@@ -294,16 +259,10 @@ const Drivers = () => {
                 </motion.div>
               )}
 
-              {/* Step 2: Vehicle Information (Conditional Rendering) */}
               {step === 2 && hasCar && (
-                <motion.div
-                  className="space-y-6"
-                  {...fadeIn}
-                  transition={{ duration: 0.5 }}
-                >
+                <motion.div className="space-y-6" {...fadeIn} transition={{ duration: 0.5 }}>
                   <h2 className="text-2xl font-semibold text-gray-800 mb-6">Vehicle Information</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Car License Plate */}
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700">Car License Plate</label>
                       <div className="relative">
@@ -320,7 +279,6 @@ const Drivers = () => {
                       {errors.carLicensePlate && <p className="text-red-500 text-sm">{errors.carLicensePlate}</p>}
                     </div>
 
-                    {/* Car Brand */}
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700">Car Brand</label>
                       <input
@@ -334,7 +292,6 @@ const Drivers = () => {
                       {errors.carBrand && <p className="text-red-500 text-sm">{errors.carBrand}</p>}
                     </div>
 
-                    {/* Car Model */}
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700">Car Model</label>
                       <input
@@ -348,7 +305,6 @@ const Drivers = () => {
                       {errors.carModel && <p className="text-red-500 text-sm">{errors.carModel}</p>}
                     </div>
 
-                    {/* Number of Seats */}
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700">Number of Seats</label>
                       <input
@@ -362,7 +318,6 @@ const Drivers = () => {
                       {errors.capacity && <p className="text-red-500 text-sm">{errors.capacity}</p>}
                     </div>
 
-                    {/* Base Rate */}
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700">Base Rate (LKR)</label>
                       <input
@@ -376,7 +331,6 @@ const Drivers = () => {
                       {errors.baseRate && <p className="text-red-500 text-sm">{errors.baseRate}</p>}
                     </div>
 
-                    {/* Driver Rate */}
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700">Driver Rate (LKR/km)</label>
                       <input
@@ -390,28 +344,21 @@ const Drivers = () => {
                       {errors.driverRate && <p className="text-red-500 text-sm">{errors.driverRate}</p>}
                     </div>
 
-                    {/* Car Image Upload */}
                     <div className="col-span-full space-y-2">
                       <label className="text-sm font-medium text-gray-700">Car Image</label>
                       <input
                         type="file"
-                        name="carImage"
+                        name="carImg"
                         onChange={handleChange}
                         className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50"
                       />
-                      {errors.carImage && <p className="text-red-500 text-sm">{errors.carImage}</p>}
+                      {errors.carImg && <p className="text-red-500 text-sm">{errors.carImg}</p>}
                     </div>
                   </div>
                 </motion.div>
               )}
 
-              {/* Navigation Buttons */}
-              <motion.div
-                className="flex justify-between mt-8 pt-6 border-t"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-              >
+              <motion.div className="flex justify-between mt-8 pt-6 border-t" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
                 {step > 1 && (
                   <button
                     onClick={() => setStep(step - 1)}
@@ -421,13 +368,7 @@ const Drivers = () => {
                   </button>
                 )}
                 <button
-                  onClick={() => {
-                    if (step < 2) {
-                      handleNextStep();
-                    } else {
-                      handleSubmit();
-                    }
-                  }}
+                  onClick={() => (step < 2 ? handleNextStep() : handleSubmit())}
                   className="ml-auto flex items-center space-x-2 px-6 py-2.5 bg-blue-950 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
                 >
                   <span>{step === 2 ? 'Submit Application' : 'Continue'}</span>
@@ -438,26 +379,12 @@ const Drivers = () => {
           </motion.div>
         </div>
 
-        {/* Right side - Image */}
         <div className="hidden lg:block w-1/2 bg-blue-950 relative overflow-hidden">
-          <motion.div
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className="absolute inset-0"
-          >
-            <img
-              src={driver_img}
-              alt="Driver Partner"
-              className="w-full h-full object-cover"
-            />
+          <motion.div initial={{ opacity: 0, scale: 1.1 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }} className="absolute inset-0">
+            <img src={driver_img} alt="Driver Partner" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-blue-950/50" />
             <div className="absolute bottom-0 left-0 right-0 p-12 text-white">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-              >
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
                 <h2 className="text-3xl font-bold mb-4">Join Our Growing Team</h2>
                 <p className="text-lg text-white/90">Flexible hours, competitive earnings, and the freedom to be your own boss.</p>
               </motion.div>
@@ -465,7 +392,6 @@ const Drivers = () => {
           </motion.div>
         </div>
       </div>
-      
     </div>
   );
 };

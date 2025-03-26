@@ -109,12 +109,21 @@ const Navbar = () => {
                     </div>
                     {user.role === "ROLE_DRIVER" && (
                       <a
-                        href="/driver-dashboard"
+                        href="/driverProfile"
                         className="block px-4 py-2.5 text-sm text-gray-700 hover:text-blue-950 hover:bg-gray-50 transition-colors"
                       >
-                        Dashboard
+                        Profile
                       </a>
                     )}
+                    {user.role === "ROLE_CUSTOMER" && (
+                      <a
+                        href="/customerProfile"
+                        className="block px-4 py-2.5 text-sm text-gray-700 hover:text-blue-950 hover:bg-gray-50 transition-colors"
+                      >
+                        Profile
+                      </a>
+                    )}
+                    
                     <button
                       onClick={logout}
                       className="block w-full text-left px-4 py-2.5 text-sm text-blue-950 hover:bg-gray-50 transition-colors"

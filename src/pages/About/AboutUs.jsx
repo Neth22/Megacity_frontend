@@ -203,9 +203,9 @@ const AboutUs = () => {
           <h2 className="text-3xl font-bold text-white mb-8">
             Ready to Experience Our Service?
           </h2>
-          <button className="bg-yellow-500 text-blue-950 px-8 py-4 rounded-xl font-semibold hover:bg-yellow-400 transition-colors animate-bounce">
+          <a href='/ourfleet' className="bg-yellow-500 text-blue-950 px-8 py-4 rounded-xl font-semibold hover:bg-yellow-400 transition-colors animate-bounce">
             Book a Ride Now
-          </button>
+          </a>
         </div>
         
       </div>

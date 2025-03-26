@@ -7,7 +7,7 @@ const API_BASE_URL = 'http://localhost:8080';
 // Add authorization headers to all axios requests
 axios.interceptors.request.use(
   config => {
-    const token = localStorage.getItem('token'); // Assuming you store your auth token in localStorage
+    const token = localStorage.getItem('token');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
@@ -19,15 +19,10 @@ axios.interceptors.request.use(
 );
 
 const CarDashboard = () => {
-  // State for cars data
   const [cars, setCars] = useState([]);
-  
-  // State for modal visibility and editing
   const [showModal, setShowModal] = useState(false);
   const [currentCar, setCurrentCar] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  
-  // State for form data
   const [formData, setFormData] = useState({
     carBrand: '',
     carModel: '',
@@ -37,17 +32,13 @@ const CarDashboard = () => {
     driverRate: 0,
     carImg: null
   });
-  
-  // State for loading and error messages
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Fetch all cars on component mount
   useEffect(() => {
     fetchCars();
   }, []);
 
-  // Function to fetch all cars
   const fetchCars = async () => {
     setLoading(true);
     try {
@@ -62,7 +53,6 @@ const CarDashboard = () => {
     }
   };
 
-  // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
     
@@ -72,7 +62,6 @@ const CarDashboard = () => {
         [name]: e.target.files[0]
       });
     } else if (type === 'number') {
-      // Ensure valid number parsing (fix the NaN issue)
       const parsedValue = value === '' ? 0 : parseFloat(value);
       setFormData({
         ...formData,
@@ -86,7 +75,6 @@ const CarDashboard = () => {
     }
   };
 
-  // Show modal for adding a new car
   const handleAddNew = () => {
     setFormData({
       carBrand: '',
@@ -101,7 +89,6 @@ const CarDashboard = () => {
     setShowModal(true);
   };
 
-  // Show modal for editing an existing car
   const handleEdit = (car) => {
     setFormData({
       carBrand: car.carBrand,
@@ -110,14 +97,12 @@ const CarDashboard = () => {
       capacity: car.capacity || 4,
       baseRate: car.baseRate || 0,
       driverRate: car.driverRate || 0,
-      // We can't retrieve the file, so this field will be empty when editing
     });
     setCurrentCar(car);
     setIsEditing(true);
     setShowModal(true);
   };
 
-  // Handle form submission for creating or updating a car
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -125,7 +110,6 @@ const CarDashboard = () => {
     
     try {
       if (isEditing) {
-        // For updating a car - using JSON body as per your API
         const updateData = {
           carBrand: formData.carBrand,
           carModel: formData.carModel,
@@ -133,7 +117,7 @@ const CarDashboard = () => {
           capacity: parseInt(formData.capacity) || 4,
           baseRate: parseFloat(formData.baseRate) || 0,
           driverRate: parseFloat(formData.driverRate) || 0,
-          carImgUrl: currentCar.carImgUrl, // Preserve existing image URL
+          carImgUrl: currentCar.carImgUrl,
           available: currentCar.available,
           assignedDriverId: currentCar.assignedDriverId
         };
@@ -148,10 +132,8 @@ const CarDashboard = () => {
           }
         );
         
-        // Update the cars list
         setCars(cars.map(car => car.carId === currentCar.carId ? response.data : car));
       } else {
-        // For creating a new car - using FormData for file upload
         const formDataObj = new FormData();
         formDataObj.append('carBrand', formData.carBrand);
         formDataObj.append('carModel', formData.carModel);
@@ -160,7 +142,6 @@ const CarDashboard = () => {
         formDataObj.append('baseRate', parseFloat(formData.baseRate) || 0);
         formDataObj.append('driverRate', parseFloat(formData.driverRate) || 0);
         
-        // Only append image if it exists
         if (formData.carImg) {
           formDataObj.append('carImg', formData.carImg);
         }
@@ -175,11 +156,9 @@ const CarDashboard = () => {
           }
         );
         
-        // Add the new car to the list
         setCars([...cars, response.data]);
       }
       
-      // Reset form and state
       setShowModal(false);
       setFormData({
         carBrand: '',
@@ -201,7 +180,6 @@ const CarDashboard = () => {
     }
   };
 
-  // Handle car deletion
   const handleDelete = async (carId) => {
     if (window.confirm('Are you sure you want to delete this car?')) {
       setLoading(true);
@@ -218,7 +196,6 @@ const CarDashboard = () => {
     }
   };
 
-  // Cancel form
   const handleCancel = () => {
     setShowModal(false);
     setFormData({
@@ -234,24 +211,21 @@ const CarDashboard = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <div className="container mx-auto p-4">
-        {/* Header */}
-        <div className="bg-blue-900 text-white rounded-lg shadow-lg mb-4 p-4">
+    <div className="ml-64 bg-gray-100 min-h-screen"> {/* Added ml-64 to offset the fixed sidebar */}
+      <div className="p-6"> {/* Adjusted padding to match DriverDashboard */}
+        <div className="bg-blue-900 text-white rounded-lg shadow-lg mb-6 p-4">
           <h1 className="text-2xl font-bold">MegaCity Cab - Car Management</h1>
           <p className="text-blue-200 text-sm">Manage your fleet with ease</p>
         </div>
         
-        {/* Error message */}
         {error && (
-          <div className="mb-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-3 rounded-lg shadow">
+          <div className="mb-6 bg-red-100 border-l-4 border-red-500 text-red-700 p-3 rounded-lg shadow">
             <p className="font-bold">Error</p>
             <p>{error}</p>
           </div>
         )}
         
-        {/* Button to add new car */}
-        <div className="mb-4 flex justify-between items-center">
+        <div className="mb-6 flex justify-between items-center">
           <button 
             onClick={handleAddNew}
             className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center text-sm"
@@ -264,7 +238,6 @@ const CarDashboard = () => {
           </button>
         </div>
         
-        {/* Loading indicator */}
         {loading && !showModal && (
           <div className="text-center py-4">
             <div className="inline-block animate-spin rounded-full h-6 w-6 border-4 border-blue-900 border-t-transparent"></div>
@@ -272,7 +245,6 @@ const CarDashboard = () => {
           </div>
         )}
         
-        {/* Single card with scrollable car list */}
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <div className="p-3 bg-blue-900 text-white">
             <h2 className="font-bold text-lg">Your Fleet</h2>
@@ -285,7 +257,6 @@ const CarDashboard = () => {
                 {cars.map(car => (
                   <div key={car.carId} className="bg-gray-50 rounded-lg shadow-sm p-3 hover:shadow-md transition duration-300 border border-gray-200">
                     <div className="flex flex-col sm:flex-row">
-                      {/* Car image */}
                       <div className="sm:w-1/5 mb-2 sm:mb-0 flex items-center justify-center">
                         {car.carImgUrl ? (
                           <img 
@@ -306,7 +277,6 @@ const CarDashboard = () => {
                         )}
                       </div>
                       
-                      {/* Car details */}
                       <div className="sm:w-3/5 px-2">
                         <div className="flex items-center justify-between mb-1">
                           <h3 className="font-bold text-sm">{car.carBrand} {car.carModel}</h3>
@@ -329,16 +299,15 @@ const CarDashboard = () => {
                           </div>
                           <div>
                             <span className="text-gray-600">Base Rate:</span>
-                            <span className="font-semibold ml-1">${(car.baseRate || 0).toFixed(2)}</span>
+                            <span className="font-semibold ml-1">LKR {(car.baseRate || 0).toFixed(2)}</span>
                           </div>
                           <div>
                             <span className="text-gray-600">Driver Rate:</span>
-                            <span className="font-semibold ml-1">${(car.driverRate || 0).toFixed(2)}</span>
+                            <span className="font-semibold ml-1">LKR {(car.driverRate || 0).toFixed(2)}</span>
                           </div>
                         </div>
                       </div>
                       
-                      {/* Actions */}
                       <div className="sm:w-1/5 mt-2 sm:mt-0 flex sm:flex-col justify-end gap-2">
                         <button
                           onClick={() => handleEdit(car)}
@@ -378,7 +347,6 @@ const CarDashboard = () => {
         </div>
       </div>
       
-      {/* Modal for Add/Edit Car */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-lg w-full max-h-screen overflow-auto">
@@ -437,7 +405,7 @@ const CarDashboard = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1">Base Rate ($)</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">Base Rate (LKR)</label>
                   <input
                     type="number"
                     name="baseRate"
@@ -449,7 +417,7 @@ const CarDashboard = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1">Driver Rate ($)</label>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">Driver Rate (LKR)</label>
                   <input
                     type="number"
                     name="driverRate"

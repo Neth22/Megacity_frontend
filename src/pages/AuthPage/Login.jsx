@@ -77,7 +77,7 @@ const Login = () => {
           navigate("/home");
           break;
         case "ROLE_DRIVER":
-          navigate("/driver-dashboard");
+          navigate("/driverProfile");
           break;
         default:
           setError("Invalid user role");

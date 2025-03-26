@@ -14,7 +14,7 @@ const Fleets = () => {
   useEffect(() => {
     const fetchCabs = async () => {
       try {
-        const response = await fetch('http://localhost:8080/all/viewCars'); // Update the URL if needed
+        const response = await fetch('http://localhost:8080/all/viewCars');
         const data = await response.json();
         
         // Map backend data to frontend structure
@@ -22,11 +22,11 @@ const Fleets = () => {
           id: car.carId,
           brand: car.carBrand,
           model: car.carModel,
-          type: car.carType || 'Economy', // Add a default type if not provided
+          type: car.baseRate > 300 ? "Luxury" : "Economy", // Modified type classification
           seats: car.capacity,
           available: car.available,
-          image: car.carImgUrl || '/api/placeholder/300/200', // Use a placeholder if no image URL is provided
-          hourlyRate: car.type === 'Luxury' ? 25 : (car.type === 'Van' ? 20 : 15) // Added hourly rate calculation
+          image: car.carImgUrl || '/api/placeholder/300/200',
+          hourlyRate: car.baseRate > 300 ? 25 : 15 // Updated hourly rate based on new classification
         }));
 
         setCabs(mappedCabs);
@@ -65,12 +65,11 @@ const Fleets = () => {
     setFilteredCabs(result);
   }, [filters, cabs]);
 
-  // Car types for filter dropdown
-  const carTypes = ['All', 'Economy', 'Luxury', 'Van'];
+  // Updated car types for filter dropdown (only Economy and Luxury)
+  const carTypes = ['All', 'Economy', 'Luxury'];
 
   // Handle booking - Navigate to booking page with selected car
   const handleBooking = (cab) => {
-    // Navigate to booking page with selected car info
     navigate('/booking', { state: { selectedCar: cab } });
   };
 
@@ -104,7 +103,7 @@ const Fleets = () => {
             <div className="flex justify-center">
               <button 
                 className="px-8 py-3 bg-yellow-500 text-blue-950 font-medium rounded hover:bg-yellow-400 transition-all shadow-lg"
-                onClick={scrollToCabsGrid} // Updated to scroll to Cabs grid
+                onClick={scrollToCabsGrid}
               >
                 Book Your Ride Now
               </button>
@@ -263,7 +262,7 @@ const Fleets = () => {
           </p>
           <button 
             className="px-8 py-3 bg-yellow-500 text-blue-950 font-bold rounded-lg hover:bg-yellow-400 transition-all shadow-lg"
-            onClick={scrollToCabsGrid} // Updated to scroll to Cabs grid
+            onClick={scrollToCabsGrid}
           >
             Reserve Your Vehicle
           </button>
